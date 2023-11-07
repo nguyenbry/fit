@@ -15,8 +15,12 @@ export const createClientOnServer = () => {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          cookieStore.set({ name, value, ...options });
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            cookieStore.set({ name, value, ...options });
+          } catch (e) {
+            console.log("error in cookieStore.set", e instanceof Error);
+          }
         },
         remove(name: string, options: CookieOptions) {
           console.log("on the server! ");
