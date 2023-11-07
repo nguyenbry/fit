@@ -1,7 +1,5 @@
 import { GymForm } from "@/components/gym-form";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
-import { users } from "@/server/db/public/users";
-import { eq } from "drizzle-orm";
 
 export default async function Gyms() {
   const myUsers = await drizzyDrake.query.users.findMany();

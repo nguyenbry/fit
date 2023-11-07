@@ -17,13 +17,13 @@ const config = {
     "@typescript-eslint/consistent-type-definitions": "off",
 
     "@typescript-eslint/consistent-type-imports": [
-      "warn",
+      "error",
       {
         prefer: "type-imports",
         fixStyle: "inline-type-imports",
       },
     ],
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/no-misused-promises": [
       2,
       {

@@ -37,5 +37,5 @@ export const createClientOnServer = () => {
     },
   );
 
-  return [supabase, cookieStore] as const;
+  return [supabase, cookieStore] as const; // so that we don't need to import and call cookies() every time
 };

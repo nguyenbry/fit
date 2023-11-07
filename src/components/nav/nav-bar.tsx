@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { Button } from "../ui/button";
 import { Navlink } from "./nav-link";
 import { createClientOnServer } from "@/supabase/server";
