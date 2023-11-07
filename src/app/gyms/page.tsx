@@ -1,14 +1,16 @@
 import { GymForm } from "@/components/gym-form";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
-import { users } from "@/server/db/users";
+import { users } from "@/server/db/public/users";
 import { eq } from "drizzle-orm";
 
 export default async function Gyms() {
-  const firstUser = await drizzyDrake.query.users.findFirst({
-    where: eq(users.first, "Bryan"),
-  });
+  const myUsers = await drizzyDrake.query.users.findMany();
+  const supabaseUsers = await drizzyDrake.query.supabaseUsers.findMany();
 
-  console.log("firstuser", firstUser);
+  console.log("ayeee", {
+    myUsers,
+    supabaseUsers,
+  });
 
   return (
     <div className="flex flex-col gap-10 px-60">
