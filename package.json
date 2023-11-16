@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "db:push": "dotenv drizzle-kit push:mysql",
+    "db:push": "dotenv drizzle-kit push:pg",
     "db:studio": "dotenv drizzle-kit studio",
+    "db:gen": "dotenv drizzle-kit introspect:pg",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",

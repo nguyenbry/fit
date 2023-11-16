@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1700093821182,
+      "tag": "0000_good_mister_fear",
+      "breakpoints": true
+    }
+  ]
+}

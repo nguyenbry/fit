@@ -1,6 +1,6 @@
 import { GymForm } from "@/components/gym-form";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
-import { users } from "@/server/db/public/users";
+import { users } from "@/server/db/schema";
 import { createClientOnServer } from "@/supabase/server";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";

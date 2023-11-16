@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getProfileById } from "@/server/db/common-functions";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
-import { users } from "@/server/db/public/users";
+import { users } from "@/server/db/schema";
 import { createClientOnServer } from "@/supabase/server";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
