@@ -1,8 +1,10 @@
-import Link from "next/link";
 import { headers } from "next/headers";
 import { createClientOnServer } from "@/supabase/server";
 import { redirect } from "next/navigation";
 import { supabaseServiceRole } from "@/supabase/service-role";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Login({
   searchParams,
@@ -54,60 +56,39 @@ export default function Login({
   };
 
   return (
-    <div className="flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
-      <Link
-        href="/"
-        className="bg-btn-background hover:bg-btn-background-hover group absolute left-8 top-8 flex items-center rounded-md px-4 py-2 text-sm text-foreground no-underline"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
-        >
-          <polyline points="15 18 9 12 15 6" />
-        </svg>{" "}
-        Back
-      </Link>
-
+    <div className="inline-flex w-3/4 gap-10 rounded-lg border bg-white dark:bg-card p-24 shadow-lg animate-in slide-in-from-top-5 spin-in-2 fade-in-25">
+      <div className="inline-flex w-1/2 flex-col gap-8">
+        <span className="block text-2xl tracking-tight">Welcome Back</span>
+        <span className="break-words text-6xl font-semibold tracking-tight text-black dark:text-white">
+          The only fitness tracker you need.
+        </span>
+      </div>
       <form
-        className="flex w-full flex-1 flex-col justify-center gap-2 text-foreground animate-in"
+        className="flex w-full flex-1 flex-col items-center justify-center gap-2 text-foreground animate-in"
         action={signIn}
       >
-        <label className="text-md" htmlFor="email">
+        <Label className="w-full" htmlFor="email">
           Email
-        </label>
-        <input
-          className="mb-6 rounded-md border bg-inherit px-4 py-2"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
+        </Label>
+        <Input name="email" placeholder="you@example.com" required />
+        <Label className="w-full" htmlFor="password">
           Password
-        </label>
-        <input
-          className="mb-6 rounded-md border bg-inherit px-4 py-2"
+        </Label>
+        <Input
           type="password"
           name="password"
           placeholder="••••••••"
           required
         />
-        <button className="mb-2 rounded-md bg-green-700 px-4 py-2 text-foreground">
+        <Button variant={"link"} className="ml-auto px-0">
+          Forgot Password?
+        </Button>
+        <Button className="w-full" variant={"secondary"}>
           Sign In
-        </button>
-        <button
-          formAction={signUp}
-          className="mb-2 rounded-md border border-foreground/20 px-4 py-2 text-foreground"
-        >
+        </Button>
+        <Button formAction={signUp} variant={"default"} className="w-full">
           Sign Up
-        </button>
+        </Button>
         {searchParams?.message && (
           <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
             {searchParams.message}
