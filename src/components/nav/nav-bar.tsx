@@ -1,3 +1,4 @@
+import { SignOutButton } from "../sign-out-button";
 import { Button } from "../ui/button";
 import { Navlink } from "./nav-link";
 import { createClientOnServer } from "@/supabase/server";
@@ -21,7 +22,7 @@ const links: {
 ];
 
 export async function Navbar() {
-  const [supabase] = createClientOnServer();
+  const { supabase } = createClientOnServer();
 
   const {
     data: { user },
@@ -40,7 +41,9 @@ export async function Navbar() {
       </ul>
 
       <div className="inline-flex grow justify-end gap-2">
-        {!user && (
+        {user ? (
+          <SignOutButton />
+        ) : (
           <>
             <Button variant={"ghost"} size={"sm"}>
               Sign In

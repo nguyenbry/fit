@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/nav/nav-bar";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Trackd",
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={GeistSans.className}>
+        <Toaster />
         <TRPCReactProvider headers={headers()}>
           <ThemeProvider
             attribute="class"
@@ -29,7 +31,7 @@ export default function RootLayout({
             <main>
               <div className="flex min-h-screen flex-col items-center gap-8">
                 <Navbar />
-                <div className="inline-flex w-full grow flex-col justify-center items-center">
+                <div className="inline-flex w-full grow flex-col items-center justify-center">
                   {children}
                 </div>
               </div>

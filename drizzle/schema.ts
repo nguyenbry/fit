@@ -9,33 +9,33 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const role = pgEnum("role", ["user", "admin"]);
 export const keyStatus = pgEnum("key_status", [
-  "default",
-  "valid",
-  "invalid",
   "expired",
+  "invalid",
+  "valid",
+  "default",
 ]);
 export const keyType = pgEnum("key_type", [
-  "aead-ietf",
-  "aead-det",
-  "hmacsha512",
-  "hmacsha256",
-  "auth",
-  "shorthash",
-  "generichash",
-  "kdf",
-  "secretbox",
-  "secretstream",
   "stream_xchacha20",
+  "secretstream",
+  "secretbox",
+  "kdf",
+  "generichash",
+  "shorthash",
+  "auth",
+  "hmacsha256",
+  "hmacsha512",
+  "aead-det",
+  "aead-ietf",
 ]);
-export const aalLevel = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
+export const aalLevel = pgEnum("aal_level", ["aal3", "aal2", "aal1"]);
 export const codeChallengeMethod = pgEnum("code_challenge_method", [
-  "s256",
   "plain",
+  "s256",
 ]);
-export const factorStatus = pgEnum("factor_status", ["unverified", "verified"]);
-export const factorType = pgEnum("factor_type", ["totp", "webauthn"]);
+export const factorStatus = pgEnum("factor_status", ["verified", "unverified"]);
+export const factorType = pgEnum("factor_type", ["webauthn", "totp"]);
+export const role = pgEnum("role", ["admin", "user"]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().notNull(),
@@ -55,10 +55,9 @@ export const gyms = pgTable(
     uid: uuid("uid")
       .notNull()
       .references(() => users.id),
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-      mode: "string",
-    }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
   },
   (table) => {
     return {

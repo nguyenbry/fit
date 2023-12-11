@@ -2,6 +2,16 @@ import "server-only";
 import { env } from "@/env.mjs";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
+
+async function getUserRequired(supabase: SupabaseClient): Promise<User> {
+  const userResponse = await supabase.auth.getUser();
+  if (userResponse.error) throw userResponse.error;
+
+  const { user } = userResponse.data;
+
+  return user;
+}
 
 export const createClientOnServer = () => {
   const cookieStore = cookies();
@@ -41,5 +51,11 @@ export const createClientOnServer = () => {
     },
   );
 
-  return [supabase, cookieStore] as const; // so that we don't need to import and call cookies() every time
+  return {
+    supabase,
+    cookieStore, // so that we don't need to import and call cookies() every time
+    getUserRequired: () => {
+      return getUserRequired(supabase);
+    },
+  } as const;
 };

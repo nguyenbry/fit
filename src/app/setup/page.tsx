@@ -18,7 +18,7 @@ const inputFieldNames: { [T in InputFieldNames]: T } = {
 };
 
 export default async function ProfileSetup() {
-  const [supabase] = createClientOnServer();
+  const { supabase } = createClientOnServer();
   const { data, error } = await supabase.auth.getUser();
 
   if (error ?? !data.user) return <div>Not logged in</div>;
@@ -36,7 +36,7 @@ export default async function ProfileSetup() {
     const firstName = nameValidator.parse(formData.get("first"));
     const lastName = nameValidator.parse(formData.get("last"));
 
-    const [supabase] = createClientOnServer();
+    const { supabase } = createClientOnServer();
 
     const { data, error } = await supabase.auth.getUser();
 

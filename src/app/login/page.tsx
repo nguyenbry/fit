@@ -24,7 +24,7 @@ export default function Login({ searchParams }: { searchParams: unknown }) {
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const [supabase] = createClientOnServer();
+    const { supabase } = createClientOnServer();
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -47,7 +47,7 @@ export default function Login({ searchParams }: { searchParams: unknown }) {
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const [supabase] = createClientOnServer();
+    const { supabase } = createClientOnServer();
 
     const existing = await drizzyDrake.query.supabaseUsers.findFirst({
       where: eq(supabaseUsers.email, email),

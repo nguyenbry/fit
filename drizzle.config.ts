@@ -7,4 +7,5 @@ export default {
   dbCredentials: {
     connectionString: env.DATABASE_URL,
   },
+  out: "./drizzle",
 } satisfies Config;
