@@ -10,12 +10,17 @@ const redirectToProfileSetupIfNecessary = async () => {
   const stuff = createClientOnServer();
   const { supabase } = stuff;
 
-  const session = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getSession();
 
-  const user = session.data.user;
+  if (error) {
+    throw error;
+    redirect("/login");
+  }
 
-  if (user) {
-    const uid = user.id;
+  const session = data.session;
+
+  if (session) {
+    const uid = session.user.id;
     const profile = await drizzyDrake.query.users.findFirst({
       where: eq(users.id, uid),
     });
@@ -27,12 +32,12 @@ const redirectToProfileSetupIfNecessary = async () => {
     }
   }
 
-  if (!user) {
+  if (!session) {
     redirect("/login");
   }
 
   return {
-    user,
+    user: session.user,
     ...stuff,
   };
 };
@@ -44,26 +49,18 @@ export default async function Gyms() {
     where: eq(gyms.uid, user.id),
   });
 
-  const myUsers = await drizzyDrake.query.users.findMany();
-  const supabaseUsers = await drizzyDrake.query.supabaseUsers.findMany();
-
-  console.log("ayeee", {
-    myUsers,
-    supabaseUsers,
-  });
+  // await drizzyDrake.insert(movements).values([]);
 
   return (
-    <div className="flex flex-col gap-10 px-60">
+    <div className="flex flex-col gap-10 px-12">
       <ParamToast />
       <div>
-        <span className="block text-4xl font-semibold text-black">
-          Add a Gym
-        </span>
+        <span className="block text-4xl font-semibold">Add a Gym</span>
         <span className="text-sm text-foreground">
           Keep track of not only your workouts but where they happened, too!
         </span>
       </div>
-      <GymForm className="rounded-lg border p-4 px-5 shadow-xl" />
+      <GymForm className="w-[70dvw] rounded-lg border p-4 px-5 shadow-xl" />
       {userGyms.length > 0 && (
         <div>
           {userGyms.map((gym) => {

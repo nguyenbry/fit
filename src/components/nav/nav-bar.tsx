@@ -1,4 +1,5 @@
 import { SignOutButton } from "../sign-out-button";
+import { ThemeToggle } from "../theme-toggle";
 import { Button } from "../ui/button";
 import { Navlink } from "./nav-link";
 import { createClientOnServer } from "@/supabase/server";
@@ -19,14 +20,18 @@ const links: {
     label: "Gyms",
     href: "/gyms",
   },
+  {
+    label: "Movements",
+    href: "/movements",
+  },
 ];
 
 export async function Navbar() {
   const { supabase } = createClientOnServer();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return (
     <nav className="flex w-2/3 items-center gap-2 py-4">
@@ -41,8 +46,11 @@ export async function Navbar() {
       </ul>
 
       <div className="inline-flex grow justify-end gap-2">
-        {user ? (
-          <SignOutButton />
+        {session ? (
+          <>
+            <ThemeToggle />
+            <SignOutButton />
+          </>
         ) : (
           <>
             <Button variant={"ghost"} size={"sm"}>

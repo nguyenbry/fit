@@ -7,12 +7,12 @@ export default async function AuthButton() {
   const { supabase } = createClientOnServer();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  return user ? (
+  return session ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      Hey, {session.user.email}
       <SignOutButton />
     </div>
   ) : (

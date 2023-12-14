@@ -13,7 +13,7 @@ import {
 } from "@/server/db/pg-utils";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { APP_ROUTES } from "@/app/_routes";
+import { APP_ROUTES } from "@/app/app-routes";
 
 /**
  * TODO: Ensure user has set their name and other required fields
@@ -24,7 +24,7 @@ export function GymForm({ className }: PropsWithCn) {
   const createGym = async (formData: FormData) => {
     "use server";
 
-    const { getUserRequired } = createClientOnServer();
+    const { getSupabaseUserRequired: getUserRequired } = createClientOnServer();
     const { id: uid } = await getUserRequired();
 
     await drizzyDrake

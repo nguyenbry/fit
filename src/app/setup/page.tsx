@@ -19,16 +19,16 @@ const inputFieldNames: { [T in InputFieldNames]: T } = {
 
 export default async function ProfileSetup() {
   const { supabase } = createClientOnServer();
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getSession();
 
-  if (error ?? !data.user) return <div>Not logged in</div>;
+  if (error ?? !data.session) return <div>Not logged in</div>;
 
-  const profile = await getProfileById(data.user.id);
+  const profile = await getProfileById(data.session.user.id);
 
   const shouldNotSeeSetup = profile?.first && profile?.last;
   shouldNotSeeSetup && redirect("/");
 
-  const email = z.string().parse(data.user.email);
+  const email = z.string().parse(data.session.user.email);
 
   async function create(formData: FormData) {
     "use server";
@@ -38,11 +38,12 @@ export default async function ProfileSetup() {
 
     const { supabase } = createClientOnServer();
 
-    const { data, error } = await supabase.auth.getUser();
+    const { data, error } = await supabase.auth.getSession();
 
     if (error) throw error;
+    if (!data.session) throw new Error("no user");
 
-    const { id } = data.user;
+    const { id } = data.session.user;
 
     await drizzyDrake
       .update(users)

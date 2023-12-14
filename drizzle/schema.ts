@@ -1,41 +1,76 @@
 import {
   pgTable,
-  pgEnum,
-  uuid,
-  timestamp,
-  text,
   unique,
+  pgEnum,
   serial,
-  varchar,
+  text,
+  boolean,
+  timestamp,
+  uuid,
+  primaryKey,
+  integer,
 } from "drizzle-orm/pg-core";
 
+export const workoutType = pgEnum("workout_type", ["uni", "bi"]);
 export const keyStatus = pgEnum("key_status", [
-  "expired",
-  "invalid",
-  "valid",
   "default",
+  "valid",
+  "invalid",
+  "expired",
 ]);
 export const keyType = pgEnum("key_type", [
-  "stream_xchacha20",
-  "secretstream",
-  "secretbox",
-  "kdf",
-  "generichash",
-  "shorthash",
-  "auth",
-  "hmacsha256",
-  "hmacsha512",
-  "aead-det",
   "aead-ietf",
+  "aead-det",
+  "hmacsha512",
+  "hmacsha256",
+  "auth",
+  "shorthash",
+  "generichash",
+  "kdf",
+  "secretbox",
+  "secretstream",
+  "stream_xchacha20",
 ]);
-export const aalLevel = pgEnum("aal_level", ["aal3", "aal2", "aal1"]);
+export const aalLevel = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const codeChallengeMethod = pgEnum("code_challenge_method", [
-  "plain",
   "s256",
+  "plain",
 ]);
-export const factorStatus = pgEnum("factor_status", ["verified", "unverified"]);
-export const factorType = pgEnum("factor_type", ["webauthn", "totp"]);
-export const role = pgEnum("role", ["admin", "user"]);
+export const factorStatus = pgEnum("factor_status", ["unverified", "verified"]);
+export const factorType = pgEnum("factor_type", ["totp", "webauthn"]);
+export const role = pgEnum("role", ["user", "admin"]);
+
+export const tags = pgTable(
+  "tags",
+  {
+    id: serial("id").primaryKey().notNull(),
+    name: text("name").notNull(),
+    verified: boolean("verified").default(false).notNull(),
+  },
+  (table) => {
+    return {
+      tagsNameKey: unique("tags_name_key").on(table.name),
+    };
+  },
+);
+
+export const movements = pgTable(
+  "movements",
+  {
+    id: serial("id").primaryKey().notNull(),
+    name: text("name").notNull(),
+    verified: boolean("verified").default(false).notNull(),
+    type: workoutType("type"),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => {
+    return {
+      movementsNameKey: unique("movements_name_key").on(table.name),
+    };
+  },
+);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().notNull(),
@@ -51,7 +86,7 @@ export const gyms = pgTable(
   "gyms",
   {
     id: serial("id").primaryKey().notNull(),
-    name: varchar("name", { length: 20 }).notNull(),
+    name: text("name").notNull(),
     uid: uuid("uid")
       .notNull()
       .references(() => users.id),
@@ -62,6 +97,27 @@ export const gyms = pgTable(
   (table) => {
     return {
       gymsNameUidKey: unique("gyms_name_uid_key").on(table.name, table.uid),
+    };
+  },
+);
+
+export const tagAssociations = pgTable(
+  "tag_associations",
+  {
+    tag: integer("tag")
+      .notNull()
+      .references(() => tags.id, { onDelete: "cascade" }),
+    movement: integer("movement")
+      .notNull()
+      .references(() => movements.id, { onDelete: "cascade" }),
+    verified: boolean("verified").default(false).notNull(),
+  },
+  (table) => {
+    return {
+      tagAssociationsPkey: primaryKey({
+        columns: [table.tag, table.movement],
+        name: "tag_associations_pkey",
+      }),
     };
   },
 );

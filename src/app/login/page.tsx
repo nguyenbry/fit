@@ -94,6 +94,7 @@ export default function Login({ searchParams }: { searchParams: unknown }) {
     const allUsersRequest = await supabaseServiceRole.auth.admin.listUsers();
 
     if (error ?? allUsersRequest.error) {
+      throw error ?? allUsersRequest.error;
       console.log("Error signing up user", error);
       return redirectWithMessage("Error authenticating");
     }
