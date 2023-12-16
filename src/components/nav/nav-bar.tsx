@@ -8,6 +8,7 @@ import { drizzyDrake } from "@/server/db/drizzy-drake";
 import { eq } from "drizzle-orm";
 import { users } from "drizzle/schema";
 import Link from "next/link";
+import { ADMIN_PATHS } from "@/app/admin/admin-paths";
 
 const links: {
   label: string;
@@ -47,12 +48,15 @@ export async function Navbar() {
   if (session && !profile) throw new Error("User not found");
 
   return (
-    <nav className="flex w-2/3 items-center gap-2 py-4">
+    <nav className="flex items-center gap-2 py-4 md:w-4/5 xl:w-2/3">
       <div className="grow">
-        <span className="text-lg font-semibold">Fitness Tracker</span>
+        <ThemeToggle className="md:hidden" />
+        <span className="hidden text-lg font-semibold md:inline">
+          Fitness Tracker
+        </span>
       </div>
 
-      <ul className="flex items-center gap-2">
+      <ul className="hidden items-center gap-2 md:flex">
         {links.map(({ href, label }) => {
           return <Navlink key={href} href={href} label={label} />;
         })}
@@ -63,7 +67,7 @@ export async function Navbar() {
           <>
             {profile?.role === "admin" && (
               <Link
-                href={"/admin"}
+                href={"/admin" + ADMIN_PATHS.MOVEMENTS}
                 className={buttonVariants({
                   size: "icon",
                   variant: "outline",

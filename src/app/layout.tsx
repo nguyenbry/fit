@@ -29,6 +29,15 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <main className="flex min-h-screen flex-col items-center gap-8">
+              <div className="absolute left-0 top-12">
+                <div className="inline-flex flex-col">
+                  <span className="sm:hidden">{"<=sm"}</span>
+                  <span className="md:hidden">sm</span>
+                  <span className="lg:hidden">md</span>
+                  <span className="xl:hidden">lg</span>
+                  <span className="2xl:hidden">xl</span>
+                </div>
+              </div>
               <Navbar />
               {children}
               {/* <div className="inline-flex w-full grow flex-col items-center justify-center">
