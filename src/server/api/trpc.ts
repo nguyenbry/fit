@@ -6,12 +6,15 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { drizzyDrake } from "@/server/db/drizzy-drake";
+import { createClientOnServer } from "@/supabase/server";
+import { eq } from "drizzle-orm";
+import { users } from "../db/schema";
 
 /**
  * 1. CONTEXT
@@ -35,10 +38,17 @@ interface CreateContextOptions {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
+  const { supabase } = createClientOnServer();
+
+  const sessionResponse = await supabase.auth.getSession();
+  // the above function could error out but we handle that in other middlewares
+  // because not every route will actually require them to be authed
+
   return {
     headers: opts.headers,
     drizzyDrake,
+    sessionResponse,
   };
 };
 
@@ -48,7 +58,7 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (opts: { req: NextRequest }) => {
+export const createTRPCContext = async (opts: { req: NextRequest }) => {
   // Fetch stuff that depends on the request
 
   return createInnerTRPCContext({
@@ -100,3 +110,57 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+export const authedProcedure = publicProcedure.use(async (opts) => {
+  const {
+    sessionResponse: { data, error },
+  } = opts.ctx;
+
+  if (error) {
+    console.log("Error in authedProcedure", error.name, error.message);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error in authedProcedure." + error.message,
+    });
+  }
+
+  const { session } = data;
+  if (!session)
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+
+  return opts.next({
+    ctx: {
+      session,
+      userId: session.user.id,
+    },
+  });
+});
+
+export const adminProcedure = authedProcedure.use(async (opts) => {
+  const {
+    ctx: {
+      drizzyDrake,
+      session: {
+        user: { id },
+      },
+    },
+  } = opts;
+
+  const profile = await drizzyDrake.query.users.findFirst({
+    where: eq(users.id, id),
+  });
+
+  if (profile?.role !== "admin")
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+
+  return opts.next({
+    ctx: {
+      ...opts.ctx,
+      profile,
+    },
+  });
+});

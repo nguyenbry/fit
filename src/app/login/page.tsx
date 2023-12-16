@@ -104,7 +104,7 @@ export default function Login({ searchParams }: { searchParams: unknown }) {
     .safeParse(searchParams);
 
   return (
-    <div className="mb-12 inline-flex w-[90%] grow flex-col gap-10 rounded-lg border bg-white p-4 shadow-lg animate-in fade-in-25 spin-in-2 slide-in-from-top-5 dark:bg-card lg:flex-grow-0 lg:flex-row lg:p-8 xl:w-3/4 xl:p-24">
+    <div className="mb-12 inline-flex w-[90%] grow flex-col gap-10 rounded-lg border bg-white p-4 shadow-lg animate-in fade-in-25 spin-in-2 slide-in-from-top-5 dark:bg-card lg:mt-[15dvh] lg:flex-grow-0 lg:flex-row lg:p-8 xl:w-3/4 xl:p-24">
       <div className="inline-flex flex-col lg:w-1/2 lg:gap-8">
         <span className="block text-2xl tracking-tight">Welcome Back</span>
         <span className="break-words text-4xl font-semibold tracking-tight text-black dark:text-white md:text-5xl xl:text-6xl">

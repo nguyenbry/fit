@@ -1,22 +1,11 @@
-import { z } from "zod";
-import {
-  authedProcedure,
-  createTRPCRouter,
-  publicProcedure,
-} from "@/server/api/trpc";
+import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { drizzyDrake } from "@/server/db/drizzy-drake";
 
-export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-  hey: authedProcedure.query(({ ctx: { session } }) => {
-    return {
-      greeting: `Hey ${session.user.id}`,
-    };
+export const movementsRouter = createTRPCRouter({
+  getAll: adminProcedure.query(async () => {
+    const movements = await drizzyDrake.query.movements.findMany();
+
+    return movements;
   }),
 
   // create: publicProcedure
