@@ -28,13 +28,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main>
-              <div className="flex min-h-screen flex-col items-center gap-8">
-                <Navbar />
-                <div className="inline-flex w-full grow flex-col items-center justify-center">
-                  {children}
-                </div>
-              </div>
+            <main className="flex min-h-screen flex-col items-center gap-8">
+              <Navbar />
+              {children}
+              {/* <div className="inline-flex w-full grow flex-col items-center justify-center">
+                
+              </div> */}
             </main>
           </ThemeProvider>
         </TRPCReactProvider>
