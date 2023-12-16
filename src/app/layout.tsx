@@ -28,7 +28,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main className="flex min-h-screen flex-col items-center gap-8">
+            <main className="flex min-h-[100dvh] flex-col items-center gap-8">
               <div className="absolute left-0 top-12">
                 <div className="inline-flex flex-col">
                   <span className="sm:hidden">{"<=sm"}</span>

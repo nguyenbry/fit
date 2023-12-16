@@ -37,7 +37,7 @@ export default async function AdminPageLayout({
                 active
                   ? "border-xslate-5 bg-xslate-3 text-black dark:text-inherit"
                   : "border-transparent hover:bg-xslate-3 hover:text-black dark:hover:text-inherit",
-                "rounded-lg border py-3 pl-4 text-sm font-medium tracking-wide transition-all hover:pl-5 active:scale-95",
+                "rounded-md border py-2 pl-4 text-sm font-medium tracking-wide transition-all hover:pl-5 active:scale-95",
               )}
             >
               <span className="text-md">{link.split("/")[1]!}</span>

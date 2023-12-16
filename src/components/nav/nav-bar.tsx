@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { users } from "drizzle/schema";
 import Link from "next/link";
 import { ADMIN_PATHS } from "@/app/admin/admin-paths";
+import { APP_ROUTES } from "@/app/app-routes";
 
 const links: {
   label: string;
@@ -81,9 +82,15 @@ export async function Navbar() {
           </>
         ) : (
           <>
-            <Button variant={"ghost"} size={"sm"}>
+            <Link
+              className={buttonVariants({
+                size: "sm",
+                variant: "ghost",
+              })}
+              href={APP_ROUTES.LOGIN}
+            >
               Sign In
-            </Button>
+            </Link>
             <Button size={"sm"}>GET STARTED</Button>
           </>
         )}
