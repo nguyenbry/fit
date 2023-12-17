@@ -13,7 +13,7 @@ import { ZodError } from "zod";
 
 import { drizzyDrake } from "@/server/db/drizzy-drake";
 import { createClientOnServer } from "@/supabase/server";
-import { supabaseUserRole } from "drizzle/auth-role";
+import { supabaseUserRole } from "drizzle/auth-session-role";
 
 /**
  * 1. CONTEXT

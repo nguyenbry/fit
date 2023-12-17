@@ -24,14 +24,15 @@ export function GymForm({ className }: PropsWithCn) {
   const createGym = async (formData: FormData) => {
     "use server";
 
-    const { getSupabaseUserRequired: getUserRequired } = createClientOnServer();
-    const { id: uid } = await getUserRequired();
+    const { getAuthSession } = createClientOnServer();
+    const session = await getAuthSession();
+    if (!session) throw new Error("no user");
 
     await drizzyDrake
       .insert(gyms)
       .values({
         name: z.string().parse(formData.get("name")),
-        uid,
+        uid: session.user.id,
       })
       .then(() => {
         revalidatePath(APP_ROUTES.GYMS);

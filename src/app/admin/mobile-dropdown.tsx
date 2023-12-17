@@ -19,7 +19,7 @@ export function SidebarDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-full">
-        {sidebarLinks.map(({ icon: Icon, link }) => {
+        {Object.entries(sidebarLinks).map(([link, Icon]) => {
           return (
             <DropdownMenuItem key={link} className="flex gap-3 px-3">
               <Icon className="h-3 w-3" />

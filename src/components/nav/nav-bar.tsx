@@ -7,7 +7,7 @@ import { createClientOnServer } from "@/supabase/server";
 import Link from "next/link";
 import { ADMIN_PATHS } from "@/app/admin/admin-paths";
 import { APP_ROUTES } from "@/app/app-routes";
-import { supabaseUserRole } from "drizzle/auth-role";
+import { supabaseUserRole } from "drizzle/auth-session-role";
 
 const links: {
   label: string;

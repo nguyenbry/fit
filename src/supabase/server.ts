@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
 import { eq } from "drizzle-orm";
 import { users } from "drizzle/schema";
-import { supabaseUserRole } from "drizzle/auth-role";
+import { supabaseUserRole } from "drizzle/auth-session-role";
 
 export const createClientOnServer = () => {
   const cookieStore = cookies();
@@ -48,20 +48,29 @@ export const createClientOnServer = () => {
     },
   );
 
-  const getSupabaseUserRequired = async () => {
+  const getAuthSession = async () => {
     const userResponse = await supabase.auth.getSession();
+
     if (userResponse.error) throw userResponse.error;
 
     const { session } = userResponse.data;
 
-    if (!session) throw new Error("No session found");
+    if (!session) return undefined;
 
-    return session.user;
+    return {
+      ...session,
+      user: {
+        ...session.user,
+        role: supabaseUserRole.parse(session.user.role),
+      },
+    };
   };
 
   const getAppUserRequired = async () => {
-    const supabaseUser = await getSupabaseUserRequired();
-    const uid = supabaseUser.id;
+    const session = await getAuthSession();
+
+    if (!session) throw new Error("Session not found");
+    const uid = session.user.id;
     const profile = await drizzyDrake.query.users.findFirst({
       where: eq(users.id, uid),
     });
@@ -71,15 +80,15 @@ export const createClientOnServer = () => {
   };
 
   const isAdmin = async () => {
-    const user = await getSupabaseUserRequired();
-    const role = supabaseUserRole.parse(user.role);
-    return role === supabaseUserRole.Enum.my_admin;
+    const session = await getAuthSession();
+    if (!session) throw new Error("Session not found");
+    return session.user.role === supabaseUserRole.Enum.my_admin;
   };
 
   return {
     supabase,
     cookieStore, // so that we don't need to import and call cookies() every time
-    getSupabaseUserRequired,
+    getAuthSession,
     getAppUserRequired,
     isAdmin,
   } as const;

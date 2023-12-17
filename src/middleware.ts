@@ -20,7 +20,6 @@ export async function middleware(request: NextRequest) {
   const { supabase, response } = createMiddlewareClient(request);
 
   // The getSession function must be called for any Server Component routes that use a Supabase client.
-  const { data, error } = await supabase.auth.getSession();
 
   const isFend = isFrontend(request);
 
@@ -33,9 +32,9 @@ export async function middleware(request: NextRequest) {
 
   if (!pageRequiresAuth) return response;
 
+  const { data, error } = await supabase.auth.getSession();
   const badOrNoSession = error ?? !data.session;
   // check session
-
   const allGood = !badOrNoSession;
   if (allGood) return response;
   console.log("redirecting to login because auth is required", { pathname });
