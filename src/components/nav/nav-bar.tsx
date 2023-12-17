@@ -4,12 +4,10 @@ import { ThemeToggle } from "../theme-toggle";
 import { Button, buttonVariants } from "../ui/button";
 import { Navlink } from "./nav-link";
 import { createClientOnServer } from "@/supabase/server";
-import { drizzyDrake } from "@/server/db/drizzy-drake";
-import { eq } from "drizzle-orm";
-import { users } from "drizzle/schema";
 import Link from "next/link";
 import { ADMIN_PATHS } from "@/app/admin/admin-paths";
 import { APP_ROUTES } from "@/app/app-routes";
+import { supabaseUserRole } from "drizzle/auth-role";
 
 const links: {
   label: string;
@@ -40,13 +38,10 @@ export async function Navbar() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const profile =
-    session &&
-    (await drizzyDrake.query.users.findFirst({
-      where: eq(users.id, session?.user.id),
-    }));
+  const sessionRoleParsed = supabaseUserRole.safeParse(session?.user.role);
 
-  if (session && !profile) throw new Error("User not found");
+  const isAdmin =
+    sessionRoleParsed.success && sessionRoleParsed.data === "my_admin";
 
   return (
     <nav className="flex items-center gap-2 py-4 md:w-4/5 xl:w-2/3">
@@ -66,7 +61,7 @@ export async function Navbar() {
       <div className="inline-flex grow justify-end gap-2">
         {session ? (
           <>
-            {profile?.role === "admin" && (
+            {isAdmin && (
               <Link
                 href={"/admin" + ADMIN_PATHS.MOVEMENTS}
                 className={buttonVariants({

@@ -6,13 +6,9 @@ import { movements } from "drizzle/schema";
 import { desc } from "drizzle-orm";
 
 export default async function MovementsPage() {
-  const { getAppUserRequired } = createClientOnServer();
+  const { isAdmin } = createClientOnServer();
 
-  const user = await getAppUserRequired();
-
-  if (user.role !== "admin") {
-    redirect("/");
-  }
+  if (!(await isAdmin())) redirect("/");
 
   const allMovements = await drizzyDrake.query.movements.findMany({
     orderBy: desc(movements.updatedAt),

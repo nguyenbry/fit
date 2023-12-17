@@ -13,8 +13,7 @@ import { ZodError } from "zod";
 
 import { drizzyDrake } from "@/server/db/drizzy-drake";
 import { createClientOnServer } from "@/supabase/server";
-import { eq } from "drizzle-orm";
-import { users } from "../db/schema";
+import { supabaseUserRole } from "drizzle/auth-role";
 
 /**
  * 1. CONTEXT
@@ -134,33 +133,20 @@ export const authedProcedure = publicProcedure.use(async (opts) => {
     ctx: {
       session,
       userId: session.user.id,
+      role: supabaseUserRole.parse(session.user.role),
     },
   });
 });
 
 export const adminProcedure = authedProcedure.use(async (opts) => {
   const {
-    ctx: {
-      drizzyDrake,
-      session: {
-        user: { id },
-      },
-    },
+    ctx: { role },
   } = opts;
 
-  const profile = await drizzyDrake.query.users.findFirst({
-    where: eq(users.id, id),
-  });
-
-  if (profile?.role !== "admin")
+  if (role !== "my_admin")
     throw new TRPCError({
       code: "UNAUTHORIZED",
     });
 
-  return opts.next({
-    ctx: {
-      ...opts.ctx,
-      profile,
-    },
-  });
+  return opts.next();
 });

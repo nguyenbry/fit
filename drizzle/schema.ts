@@ -74,12 +74,9 @@ export const movements = pgTable(
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
-    .defaultNow()
-    .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }),
   first: text("first"),
   last: text("last"),
-  role: role("role"),
 });
 
 export const gyms = pgTable(

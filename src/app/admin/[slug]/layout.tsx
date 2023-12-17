@@ -13,13 +13,9 @@ export default async function AdminPageLayout({
   params: { slug: string };
 }) {
   console.log("rendering admin layout");
-  const { getAppUserRequired } = createClientOnServer();
+  const { isAdmin } = createClientOnServer();
 
-  const user = await getAppUserRequired();
-
-  if (user.role !== "admin") {
-    redirect("/");
-  }
+  if (!(await isAdmin())) redirect("/");
 
   return (
     <div className="flex w-full grow flex-col gap-3 px-5 lg:flex-row lg:px-12 xl:px-24">

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
 import { eq } from "drizzle-orm";
 import { users } from "drizzle/schema";
+import { supabaseUserRole } from "drizzle/auth-role";
 
 export const createClientOnServer = () => {
   const cookieStore = cookies();
@@ -69,10 +70,17 @@ export const createClientOnServer = () => {
     return profile;
   };
 
+  const isAdmin = async () => {
+    const user = await getSupabaseUserRequired();
+    const role = supabaseUserRole.parse(user.role);
+    return role === supabaseUserRole.Enum.my_admin;
+  };
+
   return {
     supabase,
     cookieStore, // so that we don't need to import and call cookies() every time
     getSupabaseUserRequired,
     getAppUserRequired,
+    isAdmin,
   } as const;
 };

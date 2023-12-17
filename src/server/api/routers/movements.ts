@@ -2,7 +2,7 @@ import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
 
 export const movementsRouter = createTRPCRouter({
-  getAll: adminProcedure.query(async () => {
+  getAll: adminProcedure.query(async ({}) => {
     const movements = await drizzyDrake.query.movements.findMany();
 
     return movements;
