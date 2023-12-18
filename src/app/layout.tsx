@@ -1,11 +1,16 @@
 import "@/styles/globals.css";
 import { headers } from "next/headers";
-import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/nav/nav-bar";
 import { Toaster } from "@/components/ui/toaster";
 import { env } from "@/env.mjs";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Trackd",
@@ -20,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={GeistSans.className}>
+      <body className={inter.className}>
         <Toaster />
         <TRPCReactProvider headers={headers()}>
           <ThemeProvider

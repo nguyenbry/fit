@@ -7,6 +7,8 @@
 @import "@radix-ui/colors/red-dark.css";
 @import "@radix-ui/colors/cyan.css";
 @import "@radix-ui/colors/cyan-dark.css";
+@import "@radix-ui/colors/mint.css";
+@import "@radix-ui/colors/mint-dark.css";
 
 @layer base {
   :root {

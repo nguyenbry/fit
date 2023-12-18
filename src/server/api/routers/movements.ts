@@ -1,9 +1,13 @@
 import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { drizzyDrake } from "@/server/db/drizzy-drake";
+import { desc } from "drizzle-orm";
+import { movements as movementsTable } from "drizzle/schema";
 
 export const movementsRouter = createTRPCRouter({
   getAll: adminProcedure.query(async ({}) => {
-    const movements = await drizzyDrake.query.movements.findMany();
+    const movements = await drizzyDrake.query.movements.findMany({
+      orderBy: desc(movementsTable.updatedAt),
+    });
 
     return movements;
   }),
