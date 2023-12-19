@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { MovementType } from "@/app/movements/types";
+import { ComboboxDemo } from "./combo-box";
 
 const MOVEMENT_TYPES: {
   [TType in NonNullable<MovementType>]: `${TType}lateral`;
@@ -60,7 +61,7 @@ function CreateForm({ close }: { close: () => void }) {
     <>
       <span className="mt-5 text-2xl font-medium">Create a new movement</span>
       <form
-        className="mb-5 flex flex-col gap-2 rounded-md border border-xslate-5 bg-xslate-1 p-4 animate-in slide-in-from-top-6 dark:border-xslate-3"
+        className="mb-5 flex flex-col gap-4 rounded-md border border-xslate-5 bg-xslate-1 p-4 animate-in slide-in-from-top-6 dark:border-xslate-3"
         action={createMovement}
       >
         <div className="flex flex-col gap-1">
@@ -71,7 +72,6 @@ function CreateForm({ close }: { close: () => void }) {
             name={nameKey}
             required
             minLength={4}
-            className="mb-3"
           />
         </div>
 
@@ -79,7 +79,11 @@ function CreateForm({ close }: { close: () => void }) {
           <Label htmlFor={movementTypeKey}>Type</Label>
           <Select required name={movementTypeKey}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a type"></SelectValue>
+              <SelectValue
+                placeholder={
+                  <span className="text-muted-foreground">Select a type</span>
+                }
+              />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -93,6 +97,11 @@ function CreateForm({ close }: { close: () => void }) {
               </SelectGroup>
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <Label htmlFor={"box"}>Box</Label>
+          <ComboboxDemo />
         </div>
 
         <div className="mt-4 flex gap-3 lg:gap-1.5">
