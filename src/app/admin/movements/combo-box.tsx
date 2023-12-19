@@ -103,6 +103,7 @@ export function ComboboxDemo() {
         </div>
       </PopoverTrigger>
       <PopoverContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
         className="p-0"
         align="start"
         style={
