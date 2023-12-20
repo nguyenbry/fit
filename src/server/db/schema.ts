@@ -2,7 +2,7 @@ export {
   users,
   gyms,
   movements,
-  tagAssociations,
-  tags,
+  targetMovement,
+  targets,
 } from "../../../drizzle/schema";
 export { supabaseUsers } from "./auth/users";

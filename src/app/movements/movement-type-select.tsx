@@ -25,9 +25,7 @@ const MOVEMENT_TYPES: {
 export function MovementTypeSelect({ movement }: { movement: Movement }) {
   // const formRef = useRef<HTMLFormElement>(null);
 
-  const [, formAction] = useFormState<UpdateMovementTypeFormState>(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+  const [, formAction] = useFormState<UpdateMovementTypeFormState, FormData>(
     updateMovementType,
     {
       message: null,
@@ -50,8 +48,6 @@ export function MovementTypeSelect({ movement }: { movement: Movement }) {
           // form.requestSubmit(); // replaces a submit button essentially
           const fd = new FormData();
           fd.set("type", t);
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           formAction(fd);
           // const data = await updateMovementType(
           //   {

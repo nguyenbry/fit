@@ -22,6 +22,8 @@ const config: Config = {
         xred: generateRadixColorScale("red"),
         xcyan: generateRadixColorScale("cyan"),
         xmint: generateRadixColorScale("mint"),
+        xiris: generateRadixColorScale("iris"),
+        xviolet: generateRadixColorScale("violet"),
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

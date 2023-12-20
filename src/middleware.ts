@@ -1,10 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createMiddlewareClient } from "./supabase/middleware";
-import { APP_ROUTES, REQUIRES_AUTH_MAP } from "./app/app-routes";
-
-const isAuthMapKey = (key: string): key is keyof typeof REQUIRES_AUTH_MAP => {
-  return key in REQUIRES_AUTH_MAP;
-};
+import { APP_ROUTES, REQUIRES_AUTH_MAP, ADMIN_PATHS } from "./app/app-routes";
+import { supabaseUserRole } from "drizzle/auth-session-role";
 
 function getBaseUrl() {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
@@ -28,17 +25,30 @@ export async function middleware(request: NextRequest) {
   if (!isFend) return response;
 
   const pageRequiresAuth =
-    isAuthMapKey(pathname) && REQUIRES_AUTH_MAP[pathname];
+    Object.entries(REQUIRES_AUTH_MAP).find(([beginningPath]) => {
+      return pathname.startsWith(beginningPath);
+    })?.[1] ?? false;
 
   if (!pageRequiresAuth) return response;
 
   const { data, error } = await supabase.auth.getSession();
-  const badOrNoSession = error ?? !data.session;
-  // check session
-  const allGood = !badOrNoSession;
-  if (allGood) return response;
-  console.log("redirecting to login because auth is required", { pathname });
-  return NextResponse.redirect(getBaseUrl() + APP_ROUTES.LOGIN);
+
+  const red = NextResponse.redirect(getBaseUrl() + APP_ROUTES.LOGIN);
+
+  if (error) return red;
+  if (!data.session) return red;
+
+  const isAdminOnly = ADMIN_PATHS.some((path) => pathname.startsWith(path));
+
+  if (!isAdminOnly) return response;
+
+  const { user } = data.session;
+
+  const isAdmin = supabaseUserRole.parse(user.role) === "my_admin";
+
+  if (!isAdmin) return red;
+
+  return response;
 }
 
 function isFrontend(req: NextRequest) {

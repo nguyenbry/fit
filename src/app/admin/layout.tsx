@@ -1,19 +1,12 @@
-import { createClientOnServer } from "@/supabase/server";
-import { redirect } from "next/navigation";
 import { SidebarDropdown } from "./mobile-dropdown";
 import { sidebarLinks } from "./sidebar-links";
 import { SidebarLink } from "./sidebar-link";
 
-export default async function AdminPageLayout({
+export default function AdminPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  console.log("rendering admin layout");
-  const { isAdmin } = createClientOnServer();
-
-  if (!(await isAdmin())) redirect("/");
-
   return (
     <div className="flex w-full grow flex-col gap-8 px-5 lg:flex-row lg:px-12 xl:px-24">
       <SidebarDropdown />

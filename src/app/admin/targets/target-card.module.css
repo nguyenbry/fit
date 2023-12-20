@@ -1,0 +1,15 @@
+.gloss {
+  background: linear-gradient(90deg, transparent, #f0f0f0, transparent);
+  background-size: 200% 100%;
+  animation: shine 1.5s linear infinite;
+  border-radius: 4px;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

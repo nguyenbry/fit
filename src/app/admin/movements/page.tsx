@@ -6,7 +6,7 @@ import { api } from "@/trpc/react";
 import type { Movement } from "@/trpc/router-outputs";
 import { Pencil, Plus } from "lucide-react";
 import { useState } from "react";
-import { createMovement } from "./actions";
+import { createMovement } from "../actions";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import type { MovementType } from "@/app/movements/types";
 import { ComboboxDemo } from "./combo-box";
+import { FormContainer } from "@/components/form-container";
 
 const MOVEMENT_TYPES: {
   [TType in NonNullable<MovementType>]: `${TType}lateral`;
@@ -60,10 +61,7 @@ function CreateForm({ close }: { close: () => void }) {
   return (
     <>
       <span className="mt-5 text-2xl font-medium">Create a new movement</span>
-      <form
-        className="mb-5 flex flex-col gap-4 rounded-md border border-xslate-5 bg-xslate-1 p-4 animate-in slide-in-from-top-6 dark:border-xslate-3"
-        action={createMovement}
-      >
+      <FormContainer className="mb-5" action={createMovement}>
         <div className="flex flex-col gap-1">
           <Label htmlFor={nameKey}>Name</Label>
           <Input
@@ -123,7 +121,7 @@ function CreateForm({ close }: { close: () => void }) {
             Submit
           </Button>
         </div>
-      </form>
+      </FormContainer>
     </>
   );
 }

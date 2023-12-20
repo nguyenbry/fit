@@ -17,7 +17,7 @@ export function SidebarLink({ link }: { link: keyof typeof sidebarLinks }) {
       key={link}
       className={cn(
         active
-          ? "border-xslate-5 bg-xslate-3 text-black dark:text-inherit"
+          ? "border-xviolet-5 bg-xviolet-3 text-black dark:text-inherit"
           : "border-transparent hover:bg-xslate-3 hover:text-black dark:hover:text-inherit",
         "inline-flex items-center gap-2 rounded-md border py-2 pl-3 text-sm font-medium tracking-wide transition-all hover:pl-3.5 active:scale-95",
       )}

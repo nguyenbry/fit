@@ -13,3 +13,5 @@ export const REQUIRES_AUTH_MAP = {
   "/login": false,
   "/admin": true,
 } as const satisfies Record<Pathnames, boolean>;
+
+export const ADMIN_PATHS = ["/admin"] as const satisfies readonly Pathnames[];

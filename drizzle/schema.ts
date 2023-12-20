@@ -40,8 +40,8 @@ export const factorStatus = pgEnum("factor_status", ["unverified", "verified"]);
 export const factorType = pgEnum("factor_type", ["totp", "webauthn"]);
 export const role = pgEnum("role", ["user", "admin"]);
 
-export const tags = pgTable(
-  "tags",
+export const targets = pgTable(
+  "targets",
   {
     id: serial("id").primaryKey().notNull(),
     name: text("name").notNull(),
@@ -98,12 +98,12 @@ export const gyms = pgTable(
   },
 );
 
-export const tagAssociations = pgTable(
-  "tag_associations",
+export const targetMovement = pgTable(
+  "target_movement",
   {
-    tag: integer("tag")
+    target: integer("target")
       .notNull()
-      .references(() => tags.id, { onDelete: "cascade" }),
+      .references(() => targets.id, { onDelete: "cascade" }),
     movement: integer("movement")
       .notNull()
       .references(() => movements.id, { onDelete: "cascade" }),
@@ -112,7 +112,7 @@ export const tagAssociations = pgTable(
   (table) => {
     return {
       tagAssociationsPkey: primaryKey({
-        columns: [table.tag, table.movement],
+        columns: [table.target, table.movement],
         name: "tag_associations_pkey",
       }),
     };
