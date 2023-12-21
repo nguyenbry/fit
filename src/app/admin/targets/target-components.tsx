@@ -22,7 +22,7 @@ export function TargetCardClientOrServer({
   return (
     <div
       className={cn(
-        "md min-h-28 col-span-1 rounded border border-xslate-5 p-3 hover:border-xviolet-7 md:p-4",
+        "md min-h-28 hover:border-xviolet-7 col-span-1 rounded border border-xslate-5 p-3 md:p-4",
         className,
       )}
     >
@@ -33,12 +33,12 @@ export function TargetCardClientOrServer({
         </div>
         {deleteButtonProps ? (
           <Button
-            size={"icon"}
+            size={"responsive-icon"}
             variant={"outline"}
             className="ml-auto"
             {...deleteButtonProps}
           >
-            <Trash className="size-4" />
+            <Trash />
           </Button>
         ) : (
           <Loader2 className="size-4 ml-auto animate-spin" />

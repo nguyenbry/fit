@@ -29,7 +29,8 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2",
         sm: "h-8 px-4",
         lg: "h-10 px-8",
-        icon: "h-9 w-9",
+        icon: "size-9 [&>svg]:size-4",
+        "responsive-icon": "size-7 [&>svg]:size-3 md:[&>svg]:size-4 md:size-8 lg:size-9",
       },
     },
     defaultVariants: {
