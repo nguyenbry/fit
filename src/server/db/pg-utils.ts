@@ -1,5 +1,9 @@
 import postgres from "postgres";
 
+export function isPgError(v: unknown): v is postgres.PostgresError {
+  return v instanceof postgres.PostgresError;
+}
+
 export function getHandlePgErrorOrRethrow(
   pgErrorHandler: (pgError: postgres.PostgresError) => void,
 ) {

@@ -8,7 +8,7 @@ export default function AdminPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full grow flex-col gap-8 px-5 lg:flex-row lg:px-12 xl:px-24">
+    <div className="flex w-full grow flex-col gap-8 px-3 md:px-5 lg:flex-row lg:px-12 xl:px-24">
       <SidebarDropdown />
       <div className="hidden w-[15vw] flex-col gap-1 lg:inline-flex">
         {Object.keys(sidebarLinks).map((link) => {

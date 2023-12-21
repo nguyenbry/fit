@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sidebarLinks } from "./sidebar-links";
+import Link from "next/link";
 
 export function SidebarDropdown() {
   return (
@@ -21,9 +22,11 @@ export function SidebarDropdown() {
       <DropdownMenuContent align="center" className="w-full">
         {Object.entries(sidebarLinks).map(([link, Icon]) => {
           return (
-            <DropdownMenuItem key={link} className="flex gap-3 px-3">
-              <Icon className="h-3 w-3" />
-              {link}
+            <DropdownMenuItem key={link} className="flex gap-3 px-3" asChild>
+              <Link href={`/admin${link}`}>
+                <Icon className="h-3 w-3" />
+                {link}
+              </Link>
             </DropdownMenuItem>
           );
         })}
