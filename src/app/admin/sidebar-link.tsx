@@ -22,7 +22,7 @@ export function SidebarLink({ link }: { link: keyof typeof sidebarLinks }) {
         "inline-flex items-center gap-2 rounded-md border py-2 pl-3 text-sm font-medium tracking-wide transition-all hover:pl-3.5 active:scale-95",
       )}
     >
-      <Icon className="h-4 w-4" />
+      <Icon className="size-4" />
       <span className="text-md">{link.split("/")[1]!}</span>
     </Link>
   );

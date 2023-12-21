@@ -43,7 +43,7 @@ export default function AdminMovementPage() {
           variant={"success"}
           className="w-full lg:ml-auto lg:w-9"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="size-4" />
         </Button>
       )}
       {isCreating && <CreateForm close={() => setIsCreating(false)} />}
@@ -133,7 +133,7 @@ function MovementCard({ movement: { name } }: { movement: Movement }) {
         <span className="font-medium tracking-tight">{name}</span>
 
         <Button variant={"outline"} size={"icon"}>
-          <Pencil className="h-4 w-4" />
+          <Pencil className="size-4" />
         </Button>
       </div>
     </div>

@@ -15,7 +15,7 @@ export function SignOutButton() {
   return (
     <form action={signOut}>
       <Button size="icon" variant={"outline"}>
-        <LogOut className="h-4 w-4" />
+        <LogOut className="size-4" />
       </Button>
     </form>
   );

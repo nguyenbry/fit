@@ -39,7 +39,7 @@ export function TrackForm() {
               variant={"outline"}
               onClick={() => setIsEditingWorkoutTitle(false)}
             >
-              <CheckIcon className="h-4 w-4" />
+              <CheckIcon className="size-4" />
             </Button>
           </div>
         ) : (
@@ -50,7 +50,7 @@ export function TrackForm() {
               variant={"ghost"}
               onClick={() => setIsEditingWorkoutTitle(true)}
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="size-4" />
             </Button>
           </>
         )}

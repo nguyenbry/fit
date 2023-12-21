@@ -36,7 +36,7 @@ export function AdminTargetsPage({
           variant={"success"}
           className="w-full lg:ml-auto lg:w-9"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="size-4" />
         </Button>
       )}
       {isCreating && <CreateForm close={() => setIsCreating(false)} />}
