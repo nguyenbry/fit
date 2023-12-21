@@ -12,7 +12,10 @@ export type UpdateMovementTypeFormState = {
   id: Movement["id"];
 };
 
-export const updateMovementType = async (state: UpdateMovementTypeFormState, fd: FormData) => {
+export const updateMovementType = async (
+  state: UpdateMovementTypeFormState,
+  fd: FormData,
+) => {
   const { id } = state;
   const type = z.string().parse(fd.get("type")) as NonNullable<MovementType>;
 

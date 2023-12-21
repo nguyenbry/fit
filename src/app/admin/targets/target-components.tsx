@@ -22,7 +22,7 @@ export function TargetCardClientOrServer({
   return (
     <div
       className={cn(
-        "md min-h-28 hover:border-xviolet-7 col-span-1 rounded border border-xslate-5 p-3 md:p-4",
+        "md col-span-1 min-h-28 rounded border border-xslate-5 p-3 hover:border-xviolet-7 md:p-4",
         className,
       )}
     >
@@ -41,7 +41,7 @@ export function TargetCardClientOrServer({
             <Trash />
           </Button>
         ) : (
-          <Loader2 className="size-4 ml-auto animate-spin" />
+          <Loader2 className="ml-auto size-4 animate-spin" />
         )}
       </div>
     </div>

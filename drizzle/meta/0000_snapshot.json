@@ -81,12 +81,8 @@
           "name": "gyms_uid_fkey",
           "tableFrom": "gyms",
           "tableTo": "users",
-          "columnsFrom": [
-            "uid"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["uid"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -94,10 +90,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "gyms_name_uid_key": {
-          "columns": [
-            "name",
-            "uid"
-          ],
+          "columns": ["name", "uid"],
           "nullsNotDistinct": false,
           "name": "gyms_name_uid_key"
         }

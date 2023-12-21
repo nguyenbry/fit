@@ -40,12 +40,8 @@
           "name": "gyms_uid_users_id_fk",
           "tableFrom": "gyms",
           "tableTo": "users",
-          "columnsFrom": [
-            "uid"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["uid"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -55,10 +51,7 @@
         "gyms_name_uid_key": {
           "name": "gyms_name_uid_key",
           "nullsNotDistinct": false,
-          "columns": [
-            "name",
-            "uid"
-          ]
+          "columns": ["name", "uid"]
         }
       }
     },

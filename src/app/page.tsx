@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <>
       <div className="flex h-screen flex-col items-center gap-4 px-8 pt-12 sm:px-16 md:px-32 lg:pt-32">
-        <span className="text-xviolet-11 border-xviolet-5 bg-xviolet-4 rounded-xl border px-4 py-1.5 text-xl uppercase tracking-tight">
+        <span className="rounded-xl border border-xviolet-5 bg-xviolet-4 px-4 py-1.5 text-xl uppercase tracking-tight text-xviolet-11">
           Coming soon
         </span>
         <Text className="my-4">
@@ -36,7 +36,7 @@ export default function Home() {
           START YOUR JOURNEY
         </Button>
       </div>
-      <div className="bg-xcyan-1 h-screen w-full"></div>
+      <div className="h-screen w-full bg-xcyan-1"></div>
       <ThemeToggle className="mb-4 mt-auto" />
     </>
   );
