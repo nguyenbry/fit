@@ -6,17 +6,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { targets } from "drizzle/schema";
 import { Plus } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
-import { createTarget, deleteTarget } from "../actions";
+import { useEffect, useState } from "react";
+import { deleteTarget } from "../actions";
 import { api } from "@/trpc/react";
 import type { RouterOutputs } from "@/trpc/shared";
 import { cn } from "@/lib/utils";
-import { parseActionErrorClient } from "@/lib/action-error";
+// import { parseActionErrorClient } from "@/lib/action-error";
 import { useToast } from "@/components/ui/use-toast";
 import {
   DualGridContainer,
   TargetCardClientOrServer,
 } from "./target-components";
+import { useFormState, useFormStatus } from "react-dom";
+import {
+  type CreateTargetFormState,
+  createTarget,
+} from "../actions/create-target";
 
 export function AdminTargetsPage({
   whileLoadingUI,
@@ -91,10 +96,12 @@ function TargetCardClient({ target }: { target: Target }) {
 
 function CreateForm({ close }: { close: () => void }) {
   const { toast } = useToast();
-  const [pending, startTransition] = useTransition();
   const [hasClosed, setHasClosed] = useState(false);
 
-  const nameKey = "name" satisfies keyof typeof targets.$inferSelect;
+  const [formState, formAction] = useFormState<CreateTargetFormState, FormData>(
+    createTarget,
+    null,
+  );
 
   const utils = api.useUtils();
 
@@ -113,6 +120,24 @@ function CreateForm({ close }: { close: () => void }) {
   };
 
   useEffect(() => {
+    console.log("effect firing");
+    if (!formState) return;
+
+    if (formState.success) {
+      setHasClosed(true);
+
+      onCreation(formState.data);
+      return;
+    }
+
+    toast({
+      title: "Target creation failed",
+      description: formState.error ?? undefined,
+      variant: "destructive",
+    });
+  }, [formState, toast]);
+
+  useEffect(() => {
     if (hasClosed) {
       const timer = setTimeout(() => {
         close();
@@ -129,39 +154,20 @@ function CreateForm({ close }: { close: () => void }) {
       className={cn(
         hasClosed && "duration-700 animate-out fade-out-5 slide-out-to-top-6",
       )}
-      action={(fd) => {
-        startTransition(async () => {
-          await createTarget(fd)
-            .then((newTarget) => {
-              onCreation(newTarget);
-            })
-            .catch((e) => {
-              const { actionError, error } = parseActionErrorClient(e);
-
-              if (actionError) {
-                toast({
-                  title: "Target creation failed",
-                  description: actionError.actionError,
-                  variant: "destructive",
-                });
-                return;
-              }
-              throw error;
-            });
-
-          setHasClosed(true);
-          // try {
-
-          // } catch (e) {
-          //   if (e instanceof Error) {
-          //     console.log(e.name, 2897);
-
-          //     console.log(100, e.message);
-          //   }
-          // }
-        });
-      }}
+      action={formAction}
     >
+      <FormGuts close={close} />
+    </FormContainer>
+  );
+}
+
+function FormGuts({ close }: { close: () => void }) {
+  const nameKey = "name" satisfies keyof typeof targets.$inferSelect;
+
+  const { pending } = useFormStatus();
+
+  return (
+    <>
       <div className="flex flex-col gap-1">
         <Label htmlFor={nameKey}>Name</Label>
         <Input
@@ -169,8 +175,8 @@ function CreateForm({ close }: { close: () => void }) {
           minLength={3}
           name={nameKey}
           id={nameKey}
-          disabled={pending}
           autoComplete="off"
+          disabled={pending}
         />
       </div>
       <div className="mt-4 flex gap-3 lg:gap-1.5">
@@ -194,6 +200,6 @@ function CreateForm({ close }: { close: () => void }) {
           Submit
         </Button>
       </div>
-    </FormContainer>
+    </>
   );
 }
