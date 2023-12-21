@@ -46,7 +46,6 @@ export async function Navbar() {
   return (
     <nav className="flex items-center gap-2 py-4 md:w-4/5 xl:w-2/3">
       <div className="grow">
-        <ThemeToggle className="md:hidden" />
         <span className="hidden text-lg font-semibold md:inline">
           Fitness Tracker
         </span>
