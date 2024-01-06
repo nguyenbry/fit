@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { headers } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Toaster />
+        <SonnerToaster />
         <TRPCReactProvider headers={headers()}>
           <ThemeProvider
             attribute="class"

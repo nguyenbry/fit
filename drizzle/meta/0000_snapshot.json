@@ -1,9 +1,117 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "5e7ae351-2bfa-4e56-91ac-bb82db3f2e8b",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "gyms": {
+      "name": "gyms",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uid": {
+          "name": "uid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gyms_uid_users_id_fk": {
+          "name": "gyms_uid_users_id_fk",
+          "tableFrom": "gyms",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "gyms_name_uid_key": {
+          "name": "gyms_name_uid_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name",
+            "uid"
+          ]
+        }
+      }
+    },
+    "movements": {
+      "name": "movements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "type": {
+          "name": "type",
+          "type": "workout_type",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "movements_name_key": {
+          "name": "movements_name_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
     "users": {
       "name": "users",
       "schema": "",
@@ -18,8 +126,7 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": false
         },
         "first": {
           "name": "first",
@@ -32,12 +139,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "role": {
-          "name": "role",
-          "type": "role",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -45,8 +146,72 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "gyms": {
-      "name": "gyms",
+    "target_movement": {
+      "name": "target_movement",
+      "schema": "",
+      "columns": {
+        "target": {
+          "name": "target",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "movement": {
+          "name": "movement",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "target_movement_target_targets_id_fk": {
+          "name": "target_movement_target_targets_id_fk",
+          "tableFrom": "target_movement",
+          "tableTo": "targets",
+          "columnsFrom": [
+            "target"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "target_movement_movement_movements_id_fk": {
+          "name": "target_movement_movement_movements_id_fk",
+          "tableFrom": "target_movement",
+          "tableTo": "movements",
+          "columnsFrom": [
+            "movement"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "tag_associations_pkey": {
+          "name": "tag_associations_pkey",
+          "columns": [
+            "target",
+            "movement"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "targets": {
+      "name": "targets",
       "schema": "",
       "columns": {
         "id": {
@@ -57,109 +222,33 @@
         },
         "name": {
           "name": "name",
-          "type": "varchar(20)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "uid": {
-          "name": "uid",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": false
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "gyms_uid_fkey": {
-          "name": "gyms_uid_fkey",
-          "tableFrom": "gyms",
-          "tableTo": "users",
-          "columnsFrom": ["uid"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "gyms_name_uid_key": {
-          "columns": ["name", "uid"],
+        "tags_name_key": {
+          "name": "tags_name_key",
           "nullsNotDistinct": false,
-          "name": "gyms_name_uid_key"
+          "columns": [
+            "name"
+          ]
         }
       }
     }
   },
-  "enums": {
-    "role": {
-      "name": "role",
-      "values": {
-        "user": "user",
-        "admin": "admin"
-      }
-    },
-    "key_status": {
-      "name": "key_status",
-      "values": {
-        "default": "default",
-        "valid": "valid",
-        "invalid": "invalid",
-        "expired": "expired"
-      }
-    },
-    "key_type": {
-      "name": "key_type",
-      "values": {
-        "aead-ietf": "aead-ietf",
-        "aead-det": "aead-det",
-        "hmacsha512": "hmacsha512",
-        "hmacsha256": "hmacsha256",
-        "auth": "auth",
-        "shorthash": "shorthash",
-        "generichash": "generichash",
-        "kdf": "kdf",
-        "secretbox": "secretbox",
-        "secretstream": "secretstream",
-        "stream_xchacha20": "stream_xchacha20"
-      }
-    },
-    "aal_level": {
-      "name": "aal_level",
-      "values": {
-        "aal1": "aal1",
-        "aal2": "aal2",
-        "aal3": "aal3"
-      }
-    },
-    "code_challenge_method": {
-      "name": "code_challenge_method",
-      "values": {
-        "s256": "s256",
-        "plain": "plain"
-      }
-    },
-    "factor_status": {
-      "name": "factor_status",
-      "values": {
-        "unverified": "unverified",
-        "verified": "verified"
-      }
-    },
-    "factor_type": {
-      "name": "factor_type",
-      "values": {
-        "totp": "totp",
-        "webauthn": "webauthn"
-      }
-    }
-  },
+  "enums": {},
   "schemas": {},
   "_meta": {
     "schemas": {},

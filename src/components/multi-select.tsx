@@ -1,16 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-
+import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
@@ -18,34 +10,12 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { FAKE_INPUT_CLASSES } from "@/components/ui/input";
-
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+import { ComboBox } from "./combo-box";
 
 const divId = "musclestargeted";
 
-export function ComboboxDemo() {
-  const [values, setValues] = React.useState<string[]>([]);
+export function MultiSelect(props: React.ComponentProps<typeof ComboBox>) {
+  const { options, values } = props;
   const [divWidth, setDivWidth] = React.useState<number>();
 
   React.useEffect(() => {
@@ -87,9 +57,12 @@ export function ComboboxDemo() {
           {values.length > 0 ? (
             <div className="inline-flex flex-wrap gap-1.5">
               {values.map((v) => {
+                const label = options.find((o) => o.value === v)?.label;
+
+                if (!label) throw new Error("label not found");
                 return (
                   <Badge variant={"secondary"} key={v}>
-                    {v}
+                    {label}
                   </Badge>
                 );
               })}
@@ -114,31 +87,7 @@ export function ComboboxDemo() {
             : undefined
         }
       >
-        <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {frameworks.map((framework) => (
-              <CommandItem
-                key={framework.value}
-                value={framework.value}
-                onSelect={(currentValue) => {
-                  setValues((c) => [...c, currentValue]);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    values.includes(framework.value)
-                      ? "opacity-100"
-                      : "opacity-0",
-                  )}
-                />
-                {framework.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
+        <ComboBox {...props} />
       </PopoverContent>
     </Popover>
   );

@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1700093821182,
-      "tag": "0000_good_mister_fear",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1702259277112,
-      "tag": "0001_outgoing_plazm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1702307429248,
-      "tag": "0002_lush_the_liberteens",
+      "when": 1704488383203,
+      "tag": "0000_modern_magneto",
       "breakpoints": true
     }
   ]
